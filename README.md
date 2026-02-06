@@ -56,6 +56,14 @@ The simulation environment is based on the IssacLab and LeRobot repositories; pl
 
 ***Docker is not ready yet; please use uv for Installation for now.***
 
+Unoficial docker installation:
+```bash
+make build
+make download_assets
+make download_dataset
+make run
+```
+
 ### 2. Assets & Data Preparation
 
 #### Download Simulation Assets
