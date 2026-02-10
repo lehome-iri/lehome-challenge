@@ -8,7 +8,7 @@
 #   make download_dataset
 
 IMAGE_NAME ?= lehome:latest
-CONTAINER_REPO_PATH ?= /opt/lehome-challenge
+CONTAINER_REPO_PATH ?= /lehome/lehome-challenge
 
 ASSETS_DIR := Assets
 DATASETS_DIR := Datasets
@@ -26,7 +26,7 @@ build:
 # Run (headless / server)
 # --------------------------------------------------
 run:
-	docker run --rm -it --gpus all \
+	docker run --rm -it --runtime nvidia --gpus all \
 		-v "$(CURDIR)/$(ASSETS_DIR):$(CONTAINER_REPO_PATH)/$(ASSETS_DIR)" \
 		-v "$(CURDIR)/$(DATASETS_DIR):$(CONTAINER_REPO_PATH)/$(DATASETS_DIR)" \
 		$(IMAGE_NAME)
