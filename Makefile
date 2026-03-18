@@ -10,8 +10,11 @@
 IMAGE_NAME ?= lehome:latest
 CONTAINER_REPO_PATH ?= /lehome/lehome-challenge
 
+SHARED_DIR := /home/agabas/code/lehome-challenge-iri
+
 ASSETS_DIR := Assets
 DATASETS_DIR := Datasets
+OUTPUTS_DIR := outputs
 DATASET_EXAMPLE_DIR := $(DATASETS_DIR)/example
 
 .PHONY: build run run_gui download_assets download_dataset
@@ -27,8 +30,9 @@ build:
 # --------------------------------------------------
 run:
 	docker run --rm -it --runtime nvidia --gpus all \
-		-v "$(CURDIR)/$(ASSETS_DIR):$(CONTAINER_REPO_PATH)/$(ASSETS_DIR)" \
-		-v "$(CURDIR)/$(DATASETS_DIR):$(CONTAINER_REPO_PATH)/$(DATASETS_DIR)" \
+		-v "$(SHARED_DIR)/$(ASSETS_DIR):$(CONTAINER_REPO_PATH)/$(ASSETS_DIR)" \
+		-v "$(SHARED_DIR)/$(DATASETS_DIR):$(CONTAINER_REPO_PATH)/$(DATASETS_DIR)" \
+		-v "$(CURDIR)/$(OUTPUTS_DIR):$(CONTAINER_REPO_PATH)/$(OUTPUTS_DIR)" \
 		$(IMAGE_NAME)
 
 # --------------------------------------------------
@@ -41,8 +45,9 @@ run_gui:
 		-e DISPLAY=$(DISPLAY) \
 		-e QT_X11_NO_MITSHM=1 \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v "$(CURDIR)/$(ASSETS_DIR):$(CONTAINER_REPO_PATH)/$(ASSETS_DIR)" \
-		-v "$(CURDIR)/$(DATASETS_DIR):$(CONTAINER_REPO_PATH)/$(DATASETS_DIR)" \
+		-v "$(SHARED_DIR)/$(ASSETS_DIR):$(CONTAINER_REPO_PATH)/$(ASSETS_DIR)" \
+		-v "$(SHARED_DIR)/$(DATASETS_DIR):$(CONTAINER_REPO_PATH)/$(DATASETS_DIR)" \
+		-v "$(CURDIR)/$(OUTPUTS_DIR):$(CONTAINER_REPO_PATH)/$(OUTPUTS_DIR)" \
 		$(IMAGE_NAME)
 
 # --------------------------------------------------
@@ -73,4 +78,3 @@ download_dataset:
 	hf download lehome/dataset_challenge \
 		--repo-type dataset \
 		--local-dir "$(DATASET_EXAMPLE_DIR)"
-
